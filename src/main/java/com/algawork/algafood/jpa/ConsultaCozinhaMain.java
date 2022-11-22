@@ -6,8 +6,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
 public class ConsultaCozinhaMain {
 
     public static void main(String[] args) {
@@ -18,9 +16,13 @@ public class ConsultaCozinhaMain {
 
         CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 
-        List<Cozinha> cozinhaList = cadastroCozinha.listar();
+//        List<Cozinha> cozinhaList = cadastroCozinha.listar();
+//
+//        cozinhaList.forEach(c -> System.out.println(c.getNome()));
 
-        cozinhaList.forEach(c -> System.out.println(c.getNome()));
+        Cozinha cozinha = cadastroCozinha.buscar(1L);
+
+        System.out.println(cozinha.getNome());
     }
 
 }

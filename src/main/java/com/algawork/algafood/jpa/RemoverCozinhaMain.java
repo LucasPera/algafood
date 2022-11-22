@@ -1,12 +1,11 @@
 package com.algawork.algafood.jpa;
 
 import com.algawork.algafood.AlgafoodApplication;
-import com.algawork.algafood.domain.model.Cozinha;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class InclusaoCozinhaMain {
+public class RemoverCozinhaMain {
 
     public static void main(String[] args) {
 
@@ -16,14 +15,9 @@ public class InclusaoCozinhaMain {
 
         CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 
-        Cozinha cozinha1 = new Cozinha();
-        cozinha1.setNome("Brasileira");
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Japonesa");
+        cadastroCozinha.remover(1L);
 
-        cadastroCozinha.salvar(cozinha1);
-        cadastroCozinha.salvar(cozinha2);
     }
 
 }
