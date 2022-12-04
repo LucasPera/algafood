@@ -4,8 +4,6 @@ import com.algawork.algafood.api.model.CozinhasXmlWrapper;
 import com.algawork.algafood.domain.model.Cozinha;
 import com.algawork.algafood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +33,12 @@ public class CozinhaController {
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.LOCATION, "http://api.algafood.local:8080/cozinhas");
+        Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
 
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .headers(headers)
-                .build();
+        if(cozinha != null) {
+            return ResponseEntity.ok(cozinha);
+        }
 
+        return ResponseEntity.notFound().build();
     }
 }
