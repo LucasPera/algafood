@@ -1,6 +1,5 @@
 package com.algawork.algafood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@JsonRootName("gastronomia")
+@JsonRootName("cozinha")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cozinha {
 
@@ -18,7 +17,6 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @Column(nullable = false)
     private String nome;
 
