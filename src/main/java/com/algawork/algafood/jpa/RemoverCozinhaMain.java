@@ -19,7 +19,7 @@ public class RemoverCozinhaMain {
 
         Cozinha cozinha = new Cozinha();
 
-        cadastroCozinha.remover(cozinha);
+//        cadastroCozinha.remover(cozinha);
 
     }
 
