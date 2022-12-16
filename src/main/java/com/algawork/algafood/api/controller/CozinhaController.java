@@ -1,6 +1,5 @@
 package com.algawork.algafood.api.controller;
 
-import com.algawork.algafood.api.model.CozinhasXmlWrapper;
 import com.algawork.algafood.domain.exception.EntidadeEmUsoException;
 import com.algawork.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algawork.algafood.domain.model.Cozinha;
@@ -9,7 +8,6 @@ import com.algawork.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,11 +26,6 @@ public class CozinhaController {
     @GetMapping
     public List<Cozinha> listar() {
         return cozinhaRepository.listar();
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public CozinhasXmlWrapper listarXml() {
-        return new CozinhasXmlWrapper(cozinhaRepository.listar());
     }
 
     @GetMapping("/{cozinhaId}")
@@ -62,7 +55,7 @@ public class CozinhaController {
             //copia os valores da cozinha autal para a cozinha passada por body e ignora o atributo id
             BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 
-            cozinhaRepository.salvar(cozinha);
+            cozinhaAtual = cadastroCozinhaService.salvar(cozinha);
 
             return ResponseEntity.ok(cozinhaAtual);
         }
