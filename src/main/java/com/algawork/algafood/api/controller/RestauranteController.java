@@ -5,13 +5,17 @@ import com.algawork.algafood.domain.model.Restaurante;
 import com.algawork.algafood.domain.repository.CozinhaRepository;
 import com.algawork.algafood.domain.repository.RestauranteRepository;
 import com.algawork.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -77,6 +81,40 @@ public class RestauranteController {
                     .body(e.getMessage());
         }
 
+    }
+
+    @PatchMapping("/{idRestaurante}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long idRestaurante,
+                                              @RequestBody Map<String, Object> campos) {
+       Restaurante restauranteAtual = restauranteRepository.buscar(idRestaurante);
+
+       if(restauranteAtual == null) {
+           return ResponseEntity.notFound().build();
+       }
+
+        merge(campos, restauranteAtual);
+
+        return atualizar(idRestaurante, restauranteAtual);
+    }
+
+    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+        //Cria um Restaurante a partir do map
+        ObjectMapper objectMapper = new ObjectMapper();
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+
+        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            //pega a instancia do campo
+            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+
+            //permite acesso aos atributos privados da classe restaurante
+            field.setAccessible(true);
+
+            //pega o objeto convertido
+            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+
+            //atribui o novoValor para cada instancia
+            ReflectionUtils.setField(field, restauranteDestino, novoValor);
+        });
     }
 
 }
