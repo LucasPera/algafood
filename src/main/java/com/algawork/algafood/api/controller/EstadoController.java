@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estados")
@@ -25,16 +26,16 @@ public class EstadoController {
 
     @GetMapping
     public List<Estado> listar() {
-        return estadoRepository.listar();
+        return estadoRepository.findAll();
     }
 
     @GetMapping("/{idEstado}")
     public ResponseEntity<Estado> buscar(@PathVariable Long idEstado) {
 
-        Estado estado = estadoRepository.buscar(idEstado);
+        Optional<Estado> estado = estadoRepository.findById(idEstado);
 
-        if(estado != null) {
-            return ResponseEntity.ok(estado);
+        if(estado.isPresent()) {
+            return ResponseEntity.ok(estado.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -49,21 +50,21 @@ public class EstadoController {
 
     @PutMapping("/{idEstado}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long idEstado, @RequestBody Estado estado) {
-        Estado estadoAtual = estadoRepository.buscar(idEstado);
+        Optional<Estado> estadoAtual = estadoRepository.findById(idEstado);
 
-        if(estadoAtual != null) {
-            BeanUtils.copyProperties(estado, estadoAtual, "id");
+        if(estadoAtual.isPresent()) {
+            BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
 
-            estadoAtual = cadastroEstadoService.salvar(estadoAtual);
+            Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
 
-            return ResponseEntity.ok(estadoAtual);
+            return ResponseEntity.ok(estadoSalvo);
         }
 
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{idEstado}")
-    public ResponseEntity remover(@PathVariable Long idEstado) {
+    public ResponseEntity<?> remover(@PathVariable Long idEstado) {
         try {
             cadastroEstadoService.excluir(idEstado);
             return ResponseEntity.noContent().build();
