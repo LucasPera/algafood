@@ -45,9 +45,4 @@ public class TesteController {
         return restauranteRepository.find(nome, taxaInicial, taxaFinal);
     }
 
-    @GetMapping("/restaurantes/por-nome")
-    public List<Restaurante> cozinhaPorNomeEId(String nome, Long idCozinha) {
-        return restauranteRepository.consultarPorNome(nome, idCozinha);
-    }
-
 }
