@@ -4,6 +4,8 @@ import com.algawork.algafood.domain.model.Cozinha;
 import com.algawork.algafood.domain.model.Restaurante;
 import com.algawork.algafood.domain.repository.CozinhaRepository;
 import com.algawork.algafood.domain.repository.RestauranteRepository;
+import com.algawork.algafood.infrastructure.repository.epec.RestauranteComFreteGratisSpec;
+import com.algawork.algafood.infrastructure.repository.epec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +44,15 @@ public class TesteController {
     }
     @GetMapping("/restaurantes/por-taxa-frete")
     public List<Restaurante> restaurantesPorTaxaFrete(String nome,BigDecimal taxaInicial, BigDecimal taxaFinal) {
-        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+        return restauranteRepository.findCriteria(nome, taxaInicial, taxaFinal);
+    }
+    @GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
     }
 
 }
