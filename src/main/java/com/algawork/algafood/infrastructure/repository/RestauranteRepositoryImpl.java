@@ -1,6 +1,11 @@
 package com.algawork.algafood.infrastructure.repository;
 
 import com.algawork.algafood.domain.model.Restaurante;
+import com.algawork.algafood.domain.repository.RestauranteRepository;
+import com.algawork.algafood.domain.repository.RestauranteRepositoryQueries;
+import com.algawork.algafood.infrastructure.repository.epec.RestauranteSpecs;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -17,10 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class RestauranteRepositoryImpl {
+public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    //Só instancia quando precisa
+    @Autowired @Lazy
+    private RestauranteRepository restauranteRepository;
 
     public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
@@ -80,6 +89,11 @@ public class RestauranteRepositoryImpl {
 
         return manager.createQuery(criteria).getResultList();
 
+    }
+
+    @Override
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
     }
 
 
