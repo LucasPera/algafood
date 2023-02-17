@@ -1,7 +1,6 @@
 package com.algawork.algafood.domain.repository;
 
 import com.algawork.algafood.domain.model.Restaurante;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestauranteRepository extends JpaRepository<Restaurante, Long>,
+public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long>,
         JpaSpecificationExecutor<Restaurante> {
 
     List<Restaurante> getByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
