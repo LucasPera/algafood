@@ -7,6 +7,7 @@ insert into restaurante (nome, taxa_frete, cozinha_id) values ('Indian rai rai',
 
 insert into forma_pagamento (descricao) values ("Debito")
 insert into forma_pagamento (descricao) values ("Credito")
+insert into forma_pagamento (descricao) values ("dinheiro")
 
 insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
@@ -19,3 +20,5 @@ insert into cidade (nome, estado_id) values ("Jundiaí", 1)
 insert into cidade (nome, estado_id) values ("Carapicuíba", 1)
 insert into cidade (nome, estado_id) values ("Salvador", 2)
 insert into cidade (nome, estado_id) values ("Vitória da Conquista", 2)
+
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1,2), (1,3), (2, 3), (3,2), (3,3)
