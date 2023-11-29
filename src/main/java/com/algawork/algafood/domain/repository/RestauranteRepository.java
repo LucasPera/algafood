@@ -2,6 +2,7 @@ package com.algawork.algafood.domain.repository;
 
 import com.algawork.algafood.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long>,
         JpaSpecificationExecutor<Restaurante> {
+
+    @Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+    List<Restaurante> findAll();
 
     List<Restaurante> getByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
