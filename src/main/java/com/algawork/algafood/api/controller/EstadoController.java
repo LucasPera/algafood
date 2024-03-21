@@ -30,15 +30,9 @@ public class EstadoController {
     }
 
     @GetMapping("/{idEstado}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long idEstado) {
+    public Estado buscar(@PathVariable Long idEstado) {
 
-        Optional<Estado> estado = estadoRepository.findById(idEstado);
-
-        if(estado.isPresent()) {
-            return ResponseEntity.ok(estado.get());
-        }
-
-        return ResponseEntity.notFound().build();
+        return cadastroEstadoService.buscarOuFalhar(idEstado);
 
     }
 
@@ -48,31 +42,21 @@ public class EstadoController {
         return cadastroEstadoService.salvar(estado);
     }
 
-    @PutMapping("/{idEstado}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long idEstado, @RequestBody Estado estado) {
-        Optional<Estado> estadoAtual = estadoRepository.findById(idEstado);
 
-        if(estadoAtual.isPresent()) {
-            BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
+    @PutMapping("/{estadoId}")
+    public Estado atualizar(@PathVariable Long estadoId,
+                            @RequestBody Estado estado) {
+        Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(estadoId);
 
-            Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
+        BeanUtils.copyProperties(estado, estadoAtual, "id");
 
-            return ResponseEntity.ok(estadoSalvo);
-        }
-
-        return ResponseEntity.notFound().build();
+        return cadastroEstadoService.salvar(estadoAtual);
     }
 
-    @DeleteMapping("/{idEstado}")
-    public ResponseEntity<?> remover(@PathVariable Long idEstado) {
-        try {
-            cadastroEstadoService.excluir(idEstado);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    @DeleteMapping("/{estadoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long estadoId) {
+        cadastroEstadoService.excluir(estadoId);
     }
 
 }
