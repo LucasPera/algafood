@@ -1,5 +1,6 @@
 package com.algawork.algafood.domain.model;
 
+import com.algawork.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class Restaurante {
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
     //Valida todas as propriedades de cozinha (que estão anotas dentro dela)
     @Valid
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
