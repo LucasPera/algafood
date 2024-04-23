@@ -1,6 +1,7 @@
 package com.algawork.algafood.domain.model;
 
-import com.algawork.algafood.Groups;
+import com.algawork.algafood.core.validation.Groups;
+import com.algawork.algafood.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,7 +39,8 @@ public class Restaurante {
     //tem q passar o valor minimo 1
     //@DecimalMin("1")
     @NotNull
-    @PositiveOrZero
+//    @PositiveOrZero(message = "{TaxaFrete.invalida}")
+    @TaxaFrete
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
