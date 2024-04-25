@@ -1,7 +1,9 @@
 package com.algawork.algafood.domain.model;
 
 import com.algawork.algafood.core.validation.Groups;
+import com.algawork.algafood.core.validation.Multiplo;
 import com.algawork.algafood.core.validation.TaxaFrete;
+import com.algawork.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +12,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
@@ -18,6 +22,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricao(
+        valorField = "taxaFrete",
+        descricaoField = "nome",
+        descricaoObrigatoria = "Frete Grátis")
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -39,7 +47,8 @@ public class Restaurante {
     //tem q passar o valor minimo 1
     //@DecimalMin("1")
     @NotNull
-//    @PositiveOrZero(message = "{TaxaFrete.invalida}")
+    @PositiveOrZero
+    @Multiplo(numero = 5)
     @TaxaFrete
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
