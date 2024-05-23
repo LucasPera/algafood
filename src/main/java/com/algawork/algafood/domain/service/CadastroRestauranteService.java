@@ -8,6 +8,8 @@ import com.algawork.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CadastroRestauranteService {
 
@@ -17,6 +19,8 @@ public class CadastroRestauranteService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    //colocar para salvar e dar rolback caso tenha mais de uma operação nesse metodo
+    @Transactional
     public Restaurante salvar(Restaurante restaurante) {
 
         Long cozinhaId = restaurante.getCozinha().getId();

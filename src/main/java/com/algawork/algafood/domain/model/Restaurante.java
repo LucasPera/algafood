@@ -4,7 +4,6 @@ import com.algawork.algafood.core.validation.Groups;
 import com.algawork.algafood.core.validation.Multiplo;
 import com.algawork.algafood.core.validation.TaxaFrete;
 import com.algawork.algafood.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,17 +62,14 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
     //cria um timestamp automaticamente e atribui a essa propriedade
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime dataAtualizacao;
@@ -86,7 +82,6 @@ public class Restaurante {
         inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produto = new ArrayList<>();
 }
