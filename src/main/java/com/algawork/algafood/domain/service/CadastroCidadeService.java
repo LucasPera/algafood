@@ -52,7 +52,7 @@ public class CadastroCidadeService {
     }
     
     public Long testeFeature(Long teste) {
-    	return 1L; 
+    	return 1L;
     }
 
 
