@@ -50,6 +50,10 @@ public class CadastroCidadeService {
         return cidadeRepository.findById(cidadeId)
                 .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
     }
+    
+    public Long testeFeature(Long teste) {
+    	return 1L;
+    }
 
 
 

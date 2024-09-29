@@ -66,6 +66,12 @@ public class CidadeController {
     public void remover(@PathVariable Long cidadeId) {
         cadastroCidadeService.excluir(cidadeId);
     }
+    
+    @GetMapping("/{cidadeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String teste(@PathVariable Long cidadeId) {
+        return "teste";
+    }
 
 
 
